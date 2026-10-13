@@ -105,32 +105,31 @@
   </main>
   <div id="toast" class="toast" role="status"></div>
   <script src="script.js"></script>
-  
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = "https://cnwtlwzxuhjlpksfamls.supabase.co";
-
-const SUPABASE_KEY = "sb_publishable_ZYNP4_Bxls-1mv0znFnMhQ_zTQNYdtx";
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
 
 const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
-async function checkLogin() {
-    const { data, error } = await supabaseClient.auth.getSession();
+document.body.style.visibility = "hidden";
 
-    if (error || !data.session) {
-        window.location.replace("login.html");
-        return;
-    }
+async function protectDashboard() {
+  const { data, error } = await supabaseClient.auth.getSession();
 
-    document.body.style.visibility = "visible";
+  if (error || !data.session) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  document.body.style.visibility = "visible";
 }
 
-document.body.style.visibility = "hidden";
-checkLogin();
+protectDashboard();
 </script>
 </body>
 </html>
