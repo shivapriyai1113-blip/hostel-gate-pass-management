@@ -13,6 +13,7 @@
       <h1>Hostel Gate Pass</h1>
       <p>Management System</p>
     </div>
+    <button onclick="logoutUser()">Logout</button>
     <span class="topbar-tag">PROJECT DEMO</span>
   </header>
 
@@ -127,6 +128,17 @@ async function protectDashboard() {
   }
 
   document.body.style.visibility = "visible";
+}
+
+async function logoutUser() {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Logout failed. Please try again.");
+    return;
+  }
+
+  window.location.replace("login.html");
 }
 
 protectDashboard();
