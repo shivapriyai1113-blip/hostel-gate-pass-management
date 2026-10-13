@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Gate Pass Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">HG</div>
+    <div>
+      <h1>Hostel Gate Pass</h1>
+      <p>Management System</p>
+    </div>
+    <span class="topbar-tag">PROJECT DEMO</span>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <p class="menu-label">MENU</p>
+      <button class="nav-btn active" data-page="dashboard">⌂ <span>Dashboard</span></button>
+      <button class="nav-btn" data-page="request">＋ <span>Request Gate Pass</span></button>
+      <button class="nav-btn" data-page="requests">▤ <span>Gate Pass Requests</span></button>
+      <button class="nav-btn" data-page="security">✓ <span>Security Verification</span></button>
+      <button class="nav-btn" data-page="notifications">♧ <span>Notifications</span></button>
+      <div class="sidebar-note">
+        <strong>Demo mode</strong>
+        <p>Sample data is stored in this browser only.</p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">HOSTEL ADMINISTRATION</p>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p class="muted">Manage student gate pass requests in one place.</p>
+        </div>
+        <div class="role-pill">● Student Portal</div>
+      </div>
+
+      <section class="page active" id="dashboard">
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-icon blue">▤</span><p>Total Requests</p><strong id="totalCount">0</strong><small>All submitted passes</small></article>
+          <article class="stat-card"><span class="stat-icon amber">◷</span><p>Pending</p><strong id="pendingCount">0</strong><small>Awaiting warden review</small></article>
+          <article class="stat-card"><span class="stat-icon green">✓</span><p>Approved</p><strong id="approvedCount">0</strong><small>Ready for verification</small></article>
+          <article class="stat-card"><span class="stat-icon red">×</span><p>Rejected</p><strong id="rejectedCount">0</strong><small>Requests not approved</small></article>
+        </div>
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Recent Gate Pass Requests</h3><p class="muted">Latest activity in the system</p></div><button class="text-button" data-go="requests">View all →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>PASS ID</th><th>STUDENT</th><th>DESTINATION</th><th>DATE</th><th>STATUS</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+        </article>
+        <div class="info-banner"><span>ⓘ</span><div><strong>How it works</strong><p>Submit a request, have the warden review it, then show an approved pass to security at the gate.</p></div></div>
+      </section>
+
+      <section class="page" id="request">
+        <article class="panel form-panel">
+          <div class="panel-heading"><div><h3>New Gate Pass Request</h3><p class="muted">Enter the details of your planned outing.</p></div><span class="form-icon">＋</span></div>
+          <form id="requestForm">
+            <div class="form-grid">
+              <label>Student Name <input name="student" required maxlength="70" placeholder="Enter your full name"></label>
+              <label>Student ID <input name="studentId" required maxlength="30" placeholder="e.g. STU1024"></label>
+              <label>Destination <input name="destination" required maxlength="100" placeholder="Where are you going?"></label>
+              <label>Reason for Leaving <select name="reason" required><option value="">Select a reason</option><option>Personal work</option><option>Medical appointment</option><option>Shopping</option><option>Family visit</option><option>College-related work</option><option>Other</option></select></label>
+              <label>Departure Date <input type="date" name="departureDate" id="departureDate" required></label>
+              <label>Departure Time <input type="time" name="departureTime" required></label>
+              <label>Return Date <input type="date" name="returnDate" id="returnDate" required></label>
+              <label>Return Time <input type="time" name="returnTime" required></label>
+            </div>
+            <label class="full-label">Additional Notes <textarea name="notes" rows="3" maxlength="300" placeholder="Optional details for the warden"></textarea></label>
+            <div class="form-actions"><button type="reset" class="button secondary">Clear</button><button type="submit" class="button primary">Submit Request →</button></div>
+          </form>
+        </article>
+      </section>
+
+      <section class="page" id="requests">
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Gate Pass Requests</h3><p class="muted">Review requests and update their status.</p></div><select id="statusFilter" class="filter-select"><option value="All">All statuses</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>PASS ID</th><th>STUDENT</th><th>DESTINATION</th><th>DEPARTURE</th><th>RETURN</th><th>STATUS / ACTION</th></tr></thead><tbody id="allRows"></tbody></table></div>
+          <p class="table-help">Demo: use Approve or Reject to simulate a warden's decision.</p>
+        </article>
+      </section>
+
+      <section class="page" id="security">
+        <article class="panel verify-panel">
+          <span class="verify-symbol">✓</span>
+          <h3>Security Verification</h3>
+          <p class="muted">Enter the gate pass ID to check its current status.</p>
+          <form id="verifyForm" class="verify-form"><input id="verifyId" required placeholder="e.g. GP1001"><button class="button primary" type="submit">Verify Pass</button></form>
+          <div id="verifyResult" class="verify-result" aria-live="polite">Verification result will appear here.</div>
+        </article>
+        <article class="panel"><h3>Security checklist</h3><ul class="check-list"><li>Confirm the pass ID and student details.</li><li>Allow exit only when the pass is approved.</li><li>Record entry/exit according to hostel rules.</li></ul></article>
+      </section>
+
+      <section class="page" id="notifications">
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Notifications</h3><p class="muted">Updates about gate pass requests.</p></div><button id="clearNotifications" class="text-button">Clear notifications</button></div>
+          <div id="notificationList" class="notification-list"></div>
+        </article>
+      </section>
+
+      <footer>Hostel Gate Pass Management System <span>•</span> Frontend project prototype</footer>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
