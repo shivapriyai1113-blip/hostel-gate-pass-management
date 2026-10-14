@@ -32,9 +32,27 @@ function renderStats(){
   $("rejectedCount").textContent=state.requests.filter(r=>r.status==="Rejected").length;
 }
 function renderRecent(){
-  const rows=[...state.requests].sort((a,b)=>b.createdAt-a.createdAt).slice(0,5);
-  $("recentRows").innerHTML=rows.length?rows.map(r=>`<tr><td><span class="pass-id">${escapeHTML(r.id)}</span></td><td><div class="student-cell"><strong>${escapeHTML(r.student)}</strong><small>${escapeHTML(r.studentId)}</small></div></td><td>${escapeHTML(r.destination)}</td><td>${fmtDate(r.departureDate)}</td><td>${statusTag(r.status)}</td></tr>`).join(""):`<tr><td colspan="5" class="empty-state">No requests yet. Create your first gate pass request.</td></tr>`;
+  const rows=[...state.requests]
+    .sort((a,b)=>b.createdAt-a.createdAt)
+    .slice(0,5);
+
+  $("recentRows").innerHTML = rows.length
+    ? rows.map(r => `<tr>
+        <td><span class="pass-id">${escapeHTML(r.id)}</span></td>
+        <td><div class="student-cell">
+          <strong>${escapeHTML(r.student)}</strong>
+          <small>${escapeHTML(r.studentId)}</small>
+        </div></td>
+        <td>${escapeHTML(r.destination)}</td>
+        <td>${fmtDate(r.departureDate)}</td>
+        <td>${statusTag(r.status)}</td>
+      </tr>`).join("")
+    : `<tr><td colspan="5" class="empty-state">
+        No requests yet. Create your first gate pass request.
+      </td></tr>`;
 }
+
+
 function renderRequests(){
   const filter=$("statusFilter").value;
   const rows=[...state.requests].sort((a,b)=>b.createdAt-a.createdAt).filter(r=>filter==="All"||r.status===filter);
