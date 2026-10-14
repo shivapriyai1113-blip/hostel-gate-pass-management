@@ -110,24 +110,30 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = "https://cnwtlwzxuhjlpksfamls.supabase.co";
-const SUPABASE_KEY = "27db7d2a-cd8c-4281-b8dc-4d798f838ced";
+const SUPABASE_KEY = "sb_publishable_ZYNP4_Bxls-1mvznFnMhQ_zTQNYdtx";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
-document.body.style.visibility = "hidden";
-
 async function protectDashboard() {
-  const { data, error } = await supabaseClient.auth.getSession();
+  document.body.style.visibility = "hidden";
 
-  if (error || !data.session) {
-    window.location.replace("login.html");
-    return;
+  try {
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace("login.html");
+      return;
+    }
+
+    document.body.style.visibility = "visible";
+  } catch (error) {
+    console.error(error);
+    document.body.style.visibility = "visible";
+    alert("Login check failed. Please refresh the page.");
   }
-
-  document.body.style.visibility = "visible";
 }
 
 async function logoutUser() {
