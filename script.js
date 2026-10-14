@@ -1,3 +1,13 @@
+
+const SUPABASE_URL = "https://cnwtlwzxuhjlpksfamls.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ZYNP4_Bxls-1mv0znFnMhQ_zTQNYdtx";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
 const STORAGE_KEY = "hostelGatePassDemo_v1";
 const starterData = [
   {id:"GP1001",student:"Ananya Sharma",studentId:"STU1024",destination:"City Hospital",reason:"Medical appointment",departureDate:"2026-10-14",departureTime:"10:00",returnDate:"2026-10-14",returnTime:"13:00",notes:"",status:"Pending",createdAt:Date.now()-600000},
