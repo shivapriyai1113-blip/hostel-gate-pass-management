@@ -7,7 +7,6 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-
 const STORAGE_KEY = "hostelGatePassDemo_v1";
 const starterData = [
   {id:"GP1001",student:"Ananya Sharma",studentId:"STU1024",destination:"City Hospital",reason:"Medical appointment",departureDate:"2026-10-14",departureTime:"10:00",returnDate:"2026-10-14",returnTime:"13:00",notes:"",status:"Pending",createdAt:Date.now()-600000},
@@ -35,7 +34,6 @@ function renderStats(){
 function renderRecent(){
   const rows=[...state.requests].sort((a,b)=>b.createdAt-a.createdAt).slice(0,5);
   $("recentRows").innerHTML=rows.length?rows.map(r=>`<tr><td><span class="pass-id">${escapeHTML(r.id)}</span></td><td><div class="student-cell"><strong>${escapeHTML(r.student)}</strong><small>${escapeHTML(r.studentId)}</small></div></td><td>${escapeHTML(r.destination)}</td><td>${fmtDate(r.departureDate)}</td><td>${statusTag(r.status)}</td></tr>`).join(""):`<tr><td colspan="5" class="empty-state">No requests yet. Create your first gate pass request.</td></tr>`;
-}
 }
 function renderRequests(){
   const filter=$("statusFilter").value;
@@ -97,3 +95,4 @@ $("clearNotifications").addEventListener("click",()=>{state.notifications=[];ren
 $("departureDate").min=new Date().toISOString().slice(0,10);
 $("departureDate").addEventListener("change",()=>{$("returnDate").min=$("departureDate").value;$("returnDate").value=$("returnDate").value||$("departureDate").value;});
 render();
+
