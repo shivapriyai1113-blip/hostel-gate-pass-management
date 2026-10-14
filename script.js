@@ -37,12 +37,44 @@ function renderRecent(){
   $("recentRows").innerHTML=rows.length?rows.map(r=>`<tr><td><span class="pass-id">${escapeHTML(r.id)}</span></td><td><div class="student-cell"><strong>${escapeHTML(r.student)}</strong><small>${escapeHTML(r.studentId)}</small></div></td><td>${escapeHTML(r.destination)}</td><td>${fmtDate(r.departureDate)}</td><td>${statusTag(r.status)}</td></tr>`).join(""):`<tr><td colspan="5" class="empty-state">No requests yet. Create your first gate pass request.</td></tr>`;
 }
 function renderRequests(){
-  const filter=$("statusFilter").value;
-  const rows=[...state.requests].sort((a,b)=>b.createdAt-a.createdAt).filter(r=>filter==="All"||r.status===filter);
-  $("allRows").innerHTML=rows.length?rows.map(r=>{
-    const actions=r.status==="Pending"?`<div class="action-group"><button class="action-btn approve" data-action="Approved" data-id="${escapeHTML(r.id)}">Approve</button><button class="action-btn reject" data-action="Rejected" data-id="${escapeHTML(r.id)}">Reject</button></div>`:`<span class="action-done">${escapeHTML(r.status)}</span>`;
-    return `<tr><td><span class="pass-id">${escapeHTML(r.id)}</span></td><td><div class="student-cell"><strong>${escapeHTML(r.student)}</strong><small>${escapeHTML(r.studentId)}</small></div></td><td>${escapeHTML(r.destination)}</td><td>${fmtDate(r.departureDate)}<br>${escapeHTML(r.departureTime)}</td><td>${fmtDate(r.returnDate)}<br>${escapeHTML(r.returnTime)}</td><td>${actions}</td></tr>`;
-  }).join(""):`<tr><td colspan="6" class="empty-state">No requests match this filter.</td></tr>`;
+  const filter = $("statusFilter").value;
+  const role = localStorage.getItem("userRole") || "student";
+
+  const rows = [...state.requests]
+    .sort((a,b) => b.createdAt - a.createdAt)
+    .filter(r => filter === "All" || r.status === filter);
+
+  $("allRows").innerHTML = rows.length ? rows.map(r => {
+    let actions = "";
+
+    if (role === "warden" && r.status === "Pending") {
+      actions = `
+        <div class="action-group">
+          <button class="action-btn approve"
+            data-action="Approved"
+            data-id="${escapeHTML(r.id)}">Approve</button>
+          <button class="action-btn reject"
+            data-action="Rejected"
+            data-id="${escapeHTML(r.id)}">Reject</button>
+        </div>`;
+    } else {
+      actions = `<span class="action-done">${escapeHTML(r.status)}</span>`;
+    }
+
+    return `<tr>
+      <td><span class="pass-id">${escapeHTML(r.id)}</span></td>
+      <td><div class="student-cell">
+        <strong>${escapeHTML(r.student)}</strong>
+        <small>${escapeHTML(r.studentId)}</small>
+      </div></td>
+      <td>${escapeHTML(r.destination)}</td>
+      <td>${fmtDate(r.departureDate)}<br>${escapeHTML(r.departureTime)}</td>
+      <td>${fmtDate(r.returnDate)}<br>${escapeHTML(r.returnTime)}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="6" class="empty-state">
+    No requests match this filter.
+  </td></tr>`;
 }
 function renderNotifications(){
   const list=$("notificationList");
